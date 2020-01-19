@@ -89,6 +89,11 @@ void xAxisBending(int feed, int angle, bool direction){
     delay(100);
     }
 }
-void zAxisTurning(int feed, int angle, bool direction){
-  xAxisBending(int feed, int angle, bool direction);
+void zAxisTurning(int angle){
+  while (zAxisStepper.currentPosition() != angle * angleConst) {
+    zAxisStepper.setSpeed(500);
+    zAxisStepper.run();
+  }
+  zAxisStepper.setCurrentPosition(0);
+  delay(100);
 }
