@@ -18,6 +18,9 @@ String manualStatus = "";
 int count = 0;
 int dist;
 
+void xAxisBending(int feed, int angle, bool direction);
+void zAxisTurning(int angle);
+
 void setup() {
   Serial.begin(9600);
   pinMode(limitSwitch,INPUT_PULLUP);
@@ -44,7 +47,41 @@ benderStepper.setCurrentPosition(0);
 
 void loop() {
   String mode = Serial.readString();
-
+  int angle = 0,length = 0;
+  bool dir = 0;
+  if(mode[0] == 'x'){
+    int sel = 0;
+    for(int i = 0;i < mode.length();i++){
+      if(isdigit(mode[i])){
+        switch(sel){
+          case 0:
+          length *= 10;
+          length += mode[i] - '0';
+          if(!isdigit(mode[i + 1])) sel++;
+          break;
+          case 1:
+          angle *= 10;
+          angle += mode[i] - '0';
+          if(!isdigit(mode[i + 1])) sel++;
+          break;
+          case 2:
+          dir |= (mode[i] - '0');
+          if(!isdigit(mode[i + 1])) sel++;
+          break;
+        }
+      }
+    }
+    xAxisBending(length,angle,dir);
+  }
+  else if(mode[0] == 'z'){
+    for(int i = 0;i < mode.length();i++){
+      if(isdigit(mode[i])){
+      angle *= 10;
+      angle += mode[i] - '0';
+      }    
+    }
+    zAxisTurning(angle);
+  }
 
 }
 void xAxisBending(int feed, int angle, bool direction){
