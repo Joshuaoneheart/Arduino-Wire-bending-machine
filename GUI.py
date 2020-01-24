@@ -1,15 +1,14 @@
 from tkinter import *
 import serial as pys
 from time import sleep
-
-s=pys.Serial("com3",9600)
-
 def zcom():
     s.write(f'z-{zAngle_Entry.get()}'.encode())
     sleep(1)
 def xcom():
     s.write(f'x-{xLength_Entry.get()}-{xAngle_Entry.get()}-{dir}'.encode())
     sleep(1)
+
+s=pys.Serial("com3",9600)
 root = Tk()
 root.title('Arduino Bending Machine')
 root.geometry('700x450')
@@ -48,6 +47,5 @@ xAxis.pack(side = LEFT)
 x_dir = Checkbutton(Button_frame,text = '正摺',variable=dir,onvalue=1, offvalue=0)
 x_dir.pack(side = LEFT)
 Button_frame.pack()
-
 
 root.mainloop()
